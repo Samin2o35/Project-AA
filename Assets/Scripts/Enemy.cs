@@ -57,18 +57,22 @@ public class Enemy : MonoBehaviour
             targetRotation, rotateSpeed);
     }
 
-    // Destroy player after collission with enemy
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.gameObject.CompareTag("Player"))
+        // Destroy player after collission with enemy 
+
+        if (collision.gameObject.CompareTag("Player"))
         {
             Destroy(collision.gameObject);
             target = null;
         }
-        else if(collision.gameObject.CompareTag("Bullet"))
+
+        // Destroy enemy after collission with bullet
+
+        else if (collision.gameObject.CompareTag("Bullet"))
         {
+            Destroy(this.gameObject);
             Destroy(collision.gameObject);
-            Destroy(gameObject);
         }
     }
 }
