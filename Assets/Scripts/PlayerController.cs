@@ -23,8 +23,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float speed;
 
     private Rigidbody2D playerRb;
-    private Camera cam;
-    
+    private Camera cam; 
+
     private float mx;
     private float my;
 
@@ -33,6 +33,7 @@ public class PlayerController : MonoBehaviour
     #endregion
 
     #region Start and Update
+
     private void Start()
     {
         cam = Camera.main;
@@ -54,6 +55,11 @@ public class PlayerController : MonoBehaviour
         {
             fireTimer -= Time.deltaTime;
         }
+
+        //We want a beam that can pull specient towards the ufo, when they touch the ufo,
+        //they get destroyed and the checklist updates
+
+        //We want bullets to be enabled if detected by enemy
 
         // Handle Shooting beam
         if (Input.GetMouseButtonDown(1))
@@ -91,13 +97,22 @@ public class PlayerController : MonoBehaviour
         RaycastHit2D hit = Physics2D.Raycast(mousePos, Vector2.zero);
         if(hit.collider != null)
         {
-            if(hit == GameObject.FindGameObjectWithTag("Enemy"))
+            if(hit.collider.tag == "Enemy")
             {
                 Debug.Log("hit");
                 lineRenderer.SetPosition(0, firingPoint.position);
                 lineRenderer.SetPosition(1, hit.point);
+
+                StartCoroutine(TractionRay());
             }
         }
+    }
+
+    IEnumerator TractionRay()
+    {
+        lineRenderer.enabled = true;
+        yield return new WaitForSeconds(2f);
+        lineRenderer.enabled = false;
     }
     #endregion
 }
