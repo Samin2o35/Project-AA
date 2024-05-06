@@ -56,9 +56,6 @@ public class PlayerController : MonoBehaviour
             fireTimer -= Time.deltaTime;
         }
 
-        //We want a beam that can pull specient towards the ufo, when they touch the ufo,
-        //they get destroyed and the checklist updates
-
         //We want bullets to be enabled if detected by enemy
 
         // Handle Shooting beam
@@ -76,6 +73,7 @@ public class PlayerController : MonoBehaviour
     #endregion
 
     #region Functions
+
     private void Movement()
     {
         mx = Input.GetAxisRaw("Horizontal");
@@ -99,20 +97,24 @@ public class PlayerController : MonoBehaviour
         {
             if(hit.collider.tag == "Enemy")
             {
+                lineRenderer.enabled = true;
                 Debug.Log("hit");
                 lineRenderer.SetPosition(0, firingPoint.position);
                 lineRenderer.SetPosition(1, hit.point);
 
-                StartCoroutine(TractionRay());
+                //We want a beam that can pull specient towards the ufo, when they touch the ufo,
+                //they get destroyed and the checklist updates
+
+                /*Enemy enemy = hit.collider.gameObject.GetComponent<Enemy>();
+                if (enemy != null)
+                {
+                    enemy.RotateTowardsTarget();
+                }*/
+
+                //lineRenderer.enabled = false;
             }
         }
     }
 
-    IEnumerator TractionRay()
-    {
-        lineRenderer.enabled = true;
-        yield return new WaitForSeconds(2f);
-        lineRenderer.enabled = false;
-    }
     #endregion
 }
